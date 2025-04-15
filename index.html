@@ -1,0 +1,100 @@
+< !DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Web3 JSON-RPC Method Tester</title>
+        <style>
+            body {
+                font - family: sans-serif;
+                padding: 20px;
+            }
+
+            .method {
+                margin - bottom: 20px;
+                border: 1px solid #ccc;
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .method h3 {
+                margin: 0 0 10px 0;
+            }
+
+            textarea {
+                width: 100%;
+                height: 100px;
+            }
+
+            button {
+                margin - top: 10px;
+                padding: 10px 20px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Web3 JSON-RPC Method Tester</h1>
+        <div id="methods"></div>
+
+        <script>
+            const methodList = [
+                "wallet_getPermissions", "wallet_requestPermissions", "wallet_revokePermissions", "wallet_sendTransaction",
+                "eth_accounts", "eth_blockNumber", "eth_call", "eth_chainId", "eth_estimateGas", "eth_getBalance",
+                "eth_getTransactionByHash", "eth_getTransactionReceipt", "eth_requestAccounts", "eth_sendTransaction",
+                "eth_sign", "eth_signTransaction", "eth_signTypedData", "eth_signTypedData_v4", "net_version",
+                "personal_sign", "eth_getEncryptionPublicKey", "eth_decrypt", "eth_feeHistory", "eth_gasPrice",
+                "eth_getBlockByHash", "eth_getBlockByNumber", "eth_getBlockTransactionCountByHash",
+                "eth_getBlockTransactionCountByNumber", "eth_getCode", "eth_getLogs", "eth_getStorageAt",
+                "eth_getTransactionByBlockHashAndIndex", "eth_getTransactionByBlockNumberAndIndex",
+                "eth_getTransactionCount", "eth_sendRawTransaction"
+            ];
+
+            const defaultParams = {
+                "eth_feeHistory": ["0x5", "latest", [10, 50, 90]],
+                "eth_call": [{ to: "0x0000000000000000000000000000000000000000", data: "0x" }, "latest"],
+                "eth_getBalance": ["0x0000000000000000000000000000000000000000", "latest"],
+                "eth_getTransactionByHash": ["0x123..."],
+                "eth_getTransactionReceipt": ["0x123..."],
+                "personal_sign": ["0x1234567890abcdef", "0x0000000000000000000000000000000000000000"],
+                // Додай сюди інші дефолтні параметри при потребі
+            };
+
+            const methodsDiv = document.getElementById("methods");
+
+            methodList.forEach((method, index) => {
+                const container = document.createElement("div");
+                container.className = "method";
+
+                const title = document.createElement("h3");
+                title.textContent = method;
+
+                const textarea = document.createElement("textarea");
+                textarea.value = JSON.stringify(defaultParams[method] || [], null, 2);
+                textarea.id = `params-${index}`;
+
+                const button = document.createElement("button");
+                button.textContent = "Send";
+                button.onclick = () => {
+                    const params = JSON.parse(document.getElementById(`params-${index}`).value);
+                    const payload = {
+                        id: Date.now(),
+                        jsonrpc: "2.0",
+                        method,
+                        params
+                    };
+                    window.ReactNativeWebView?.postMessage(JSON.stringify(payload));
+                    console.log("Sent:", payload);
+                };
+
+                container.appendChild(title);
+                container.appendChild(textarea);
+                container.appendChild(button);
+                methodsDiv.appendChild(container);
+            });
+        </script>
+    </body>
+
+    </html>
