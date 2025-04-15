@@ -94,9 +94,12 @@
 
         const methodsDiv = document.getElementById("methods");
 
+        const responseMap = {};
+
         methodList.forEach((method, index) => {
             const container = document.createElement("div");
             container.className = "method";
+            container.id = `method-container-${index}`;
 
             const title = document.createElement("h3");
             title.textContent = method;
@@ -115,12 +118,14 @@
             button.textContent = "Send";
             button.onclick = () => {
                 const params = JSON.parse(document.getElementById(`params-${index}`).value);
+                const requestId = Date.now();
                 const payload = {
-                    id: Date.now(),
+                    id: requestId,
                     jsonrpc: "2.0",
                     method,
                     params
                 };
+                responseMap[requestId] = `response-${index}`;
                 window.ReactNativeWebView?.postMessage(JSON.stringify(payload));
                 console.log("Sent:", payload);
             };
@@ -132,10 +137,18 @@
             methodsDiv.appendChild(container);
         });
 
-        // Слухач повідомлень від мобільної апки
         window.addEventListener("message", (event) => {
-            const data = typeof event.data === "string" ? event.data : JSON.stringify(event.data, null, 2);
-            document.getElementById("globalResponse").textContent = data;
+            const rawData = typeof event.data === "string" ? event.data : JSON.stringify(event.data);
+            try {
+                const data = JSON.parse(rawData);
+                const targetId = responseMap[data.id];
+                if (targetId) {
+                    document.getElementById(targetId).textContent = JSON.stringify(data, null, 2);
+                }
+                document.getElementById("globalResponse").textContent = JSON.stringify(data, null, 2);
+            } catch (e) {
+                document.getElementById("globalResponse").textContent = rawData;
+            }
         });
     </script>
 </body>
