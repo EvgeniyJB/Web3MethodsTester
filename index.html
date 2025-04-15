@@ -40,18 +40,20 @@
             cursor: pointer;
         }
 
-        #responseBox {
-            height: 90vh;
+        .responseBox {
+            margin-top: 10px;
+            height: 100px;
             overflow-y: auto;
             border: 1px solid #ccc;
             border-radius: 8px;
             padding: 10px;
-            background: #f9f9f9;
+            background: #f1f1f1;
         }
 
         pre {
             white-space: pre-wrap;
             word-wrap: break-word;
+            margin: 0;
         }
     </style>
 </head>
@@ -62,9 +64,9 @@
         <div id="methods"></div>
     </div>
     <div id="right">
-        <h2>Response</h2>
-        <div id="responseBox">
-            <pre id="response"></pre>
+        <h2>Last Response</h2>
+        <div class="responseBox">
+            <pre id="globalResponse"></pre>
         </div>
     </div>
 
@@ -103,6 +105,12 @@
             textarea.value = JSON.stringify(defaultParams[method] || [], null, 2);
             textarea.id = `params-${index}`;
 
+            const responseBox = document.createElement("div");
+            responseBox.className = "responseBox";
+            const responsePre = document.createElement("pre");
+            responsePre.id = `response-${index}`;
+            responseBox.appendChild(responsePre);
+
             const button = document.createElement("button");
             button.textContent = "Send";
             button.onclick = () => {
@@ -119,12 +127,15 @@
 
             container.appendChild(title);
             container.appendChild(textarea);
+            container.appendChild(responseBox);
             container.appendChild(button);
             methodsDiv.appendChild(container);
         });
+
+        // Слухач повідомлень від мобільної апки
         window.addEventListener("message", (event) => {
             const data = typeof event.data === "string" ? event.data : JSON.stringify(event.data, null, 2);
-            document.getElementById("response").textContent = data;
+            document.getElementById("globalResponse").textContent = data;
         });
     </script>
 </body>
