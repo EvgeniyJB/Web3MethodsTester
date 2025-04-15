@@ -88,7 +88,6 @@
             "eth_getTransactionByHash": ["0x123..."],
             "eth_getTransactionReceipt": ["0x123..."],
             "personal_sign": ["0x1234567890abcdef", "0x0000000000000000000000000000000000000000"]
-            // Додай сюди інші дефолтні параметри при потребі
         };
 
         const methodsDiv = document.getElementById("methods");
@@ -123,8 +122,6 @@
             container.appendChild(button);
             methodsDiv.appendChild(container);
         });
-
-        // Слухач повідомлень від мобільної апки
         window.addEventListener("message", (event) => {
             const data = typeof event.data === "string" ? event.data : JSON.stringify(event.data, null, 2);
             document.getElementById("response").textContent = data;
