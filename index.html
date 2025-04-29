@@ -137,7 +137,7 @@
             methodsDiv.appendChild(container);
         });
 
-        document.addEventListener("message", (event) => {
+        function handleMessage(event) {
             const rawData = typeof event.data === "string" ? event.data : JSON.stringify(event.data);
             try {
                 const data = JSON.parse(rawData);
@@ -150,7 +150,12 @@
             } catch (e) {
                 document.getElementById("globalResponse").textContent = rawData;
             }
-        });
+        }
+
+        // Для Android WebView
+        document.addEventListener("message", handleMessage);
+        // Для браузера та iOS WebView
+        window.addEventListener("message", handleMessage);
     </script>
 </body>
 
