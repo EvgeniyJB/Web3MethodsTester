@@ -141,6 +141,7 @@
             const rawData = typeof event.data === "string" ? event.data : JSON.stringify(event.data);
             try {
                 const data = JSON.parse(rawData);
+                console.log('DATA-> data', data)
                 const targetId = responseMap[data.id];
                 if (targetId) {
                     document.getElementById(targetId).textContent = JSON.stringify(data, null, 2);
