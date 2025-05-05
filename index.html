@@ -87,6 +87,39 @@
             "eth_feeHistory": ["0x5", "latest", [10, 50, 90]],
             "eth_call": [{ to: "0x0000000000000000000000000000000000000000", data: "0x" }, "latest"],
             "eth_getBalance": ["0x0000000000000000000000000000000000000000", "latest"],
+            "eth_getBlockByHash": [
+                "0xa6d098195dec051d95af7e584382a80641187c4ddb6e0c9fbb4e3e7e4ccbfac4",
+                false
+            ],
+            "eth_getBlockByNumber": [
+                "0x434BF6",
+                false
+            ],
+            "eth_getBlockTransactionCountByHash": [
+                "0xa6d098195dec051d95af7e584382a80641187c4ddb6e0c9fbb4e3e7e4ccbfac4"
+            ],
+            "eth_getBlockTransactionCountByNumber": ["0x434BF6"],
+            "eth_getCode": ["wallet_address",
+                "latest"
+            ],
+            "eth_getLogs": [{
+                fromBlock: "0x137d3c2",
+                toBlock: "0x137d3c3",
+                address: "0xd78ab887a33eac829b0dde8714f79276e1255028",
+                topics: []
+            }],
+            "eth_getStorageAt": [
+                "smart_contract_address",
+                "position_(hex)",
+                "blockParameter(latest/pending/0x434BF6)"
+            ],
+            "eth_getTransactionByBlockHashAndIndex": [
+                "block_hash",
+                "transaction_number_hex"],
+            "eth_getTransactionByBlockNumberAndIndex": [
+                "block_number_hex",
+                "transaction_number_hex"],
+            "eth_getTransactionCount": ["wallet_address", "latest/pending/number_hex"],
             "eth_getTransactionByHash": ["0x123..."],
             "eth_getTransactionReceipt": ["0x123..."],
             "personal_sign": ["0x1234567890abcdef", "0x0000000000000000000000000000000000000000"]
